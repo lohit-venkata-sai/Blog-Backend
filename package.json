@@ -1,0 +1,35 @@
+{
+  "dependencies": {
+    "bcryptjs": "^3.0.0",
+    "cloudinary": "^2.5.1",
+    "cookieparser": "^0.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.1",
+    "multer": "^1.4.5-lts.1",
+    "node": "^23.8.0"
+  },
+  "name": "blog_backend",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "blog application backend ",
+  "main": "src/index.js",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "mongodb",
+    "nodejs",
+    "backend"
+  ],
+  "author": "lohit",
+  "license": "ISC"
+}
