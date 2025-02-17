@@ -42,3 +42,4 @@ export const User = mongoose.model("User", new Schema({
         type: String,
     },
 }, { timestamps: true }))
+
