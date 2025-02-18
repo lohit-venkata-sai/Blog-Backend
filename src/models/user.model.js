@@ -38,8 +38,5 @@ export const User = mongoose.model("User", new Schema({
     refreshToken: {
         type: String,
     },
-    accessToken: {
-        type: String,
-    },
 }, { timestamps: true }))
 
