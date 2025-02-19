@@ -130,4 +130,23 @@ const userLogin = async (req, res, next) => {
         return next(new ApiError([error], error.message, 500));
     }
 }
-export { registerUser, userLogin }
+
+const userLogout = async (req, res, next) => {
+
+    try {
+        await User.findByIdAndUpdate(req.user._id, {
+            $set: {
+                refreshToken: null
+            }
+        }, { new: true })
+        // Clear cookies and send response
+        res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'Strict' });
+        res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'Strict' });
+
+        console.log('log out successfull')
+        return res.status(200).json(new ApiResponse('user logout successsful', [], 200, true));
+    } catch (error) {
+        return next(new ApiError([error], error.message, 500));
+    }
+}
+export { registerUser, userLogin, userLogout }
