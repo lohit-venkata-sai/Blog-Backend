@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors';
 import { errorHandler } from './middlewares/error.middleware.js';
+import CookieParser from 'cookie-parser';
 
 import healthCheckRoute from './routes/healthCheck.route.js';
 import userRoute from './routes/users.routes.js';
@@ -10,7 +11,7 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true,
 }))
-
+app.use(CookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({
