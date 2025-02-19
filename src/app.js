@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors';
+import { errorHandler } from './middlewares/error.middleware.js';
 
 import healthCheckRoute from './routes/healthCheck.route.js';
 import userRoute from './routes/users.routes.js';
@@ -21,4 +22,8 @@ app.use(express.urlencoded({
 app.use('/api/v1/healthcheck', healthCheckRoute)
 app.use('/api/v1/users', userRoute)
 
+
+
+//errorHandler
+app.use(errorHandler);
 export { app }
