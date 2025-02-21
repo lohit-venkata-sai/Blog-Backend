@@ -173,4 +173,13 @@ const userEditPassword = async (req, res, next) => {
     }
 
 }
-export { registerUser, userLogin, userLogout, userEditPassword }
+
+const getUserDetails = async (req, res, next) => {
+    try {
+        const user = await User.findById(req?.user._id).select('-password -accessToken');
+        return res.status(200).json(new ApiResponse('user data fetching successfull', user, 200, true));
+    } catch (error) {
+        return next(new ApiError([], 'error at get user details route'));
+    }
+}
+export { registerUser, userLogin, userLogout, userEditPassword, getUserDetails }
