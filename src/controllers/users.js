@@ -149,4 +149,28 @@ const userLogout = async (req, res, next) => {
         return next(new ApiError([error], error.message, 500));
     }
 }
-export { registerUser, userLogin, userLogout }
+
+const userEditPassword = async (req, res, next) => {
+    try {
+        console.log('hitted userEditPassword route', req?.user._id)
+        const user = await User.findById(req?.user._id);
+        if (!user) {
+            return next(new ApiError([], 'user doest exists'))
+        }
+        const { oldPassword, newPassword } = req.body;
+        if (!oldPassword.trim() || !newPassword.trim()) { next(new ApiError([], "fields should not be empty")) }
+        if (await bcryptjs.compare(oldPassword, user?.password)) {
+            const hashedPassword = await bcryptjs.hash(newPassword, 10);
+            user.password = hashedPassword;
+            await user.save();
+            return res.status(200).json(new ApiResponse('password updated', {}, 200, true));
+        }
+        else {
+            return next(new ApiError([], 'invalid old password'));
+        }
+    } catch (error) {
+        return next(new ApiError([error.message], 'error at users edit password router'))
+    }
+
+}
+export { registerUser, userLogin, userLogout, userEditPassword }

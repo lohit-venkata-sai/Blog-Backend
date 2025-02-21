@@ -3,6 +3,7 @@ import { User } from '../models/user.model.js';
 import { ApiError } from '../utilities/ApiError.js';
 
 const authMiddleware = async (req, _, next) => {
+    console.log('hitted auth middleware')
     const token = req.cookies.accessToken || req.header('Authorization')?.replace('Bearer ', '').trim();
     if (!token) {
         return next(new ApiError([], 'invalid or expired access token', 400));
