@@ -12,6 +12,7 @@ export const User = mongoose.model("User", new Schema({
     userId: {
         type: String,
         unique: true,
+        lowercase: true,
         required: true,
     },
     email: {

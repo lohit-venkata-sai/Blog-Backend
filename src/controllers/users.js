@@ -174,7 +174,7 @@ const userEditPassword = async (req, res, next) => {
 
 }
 
-const getUserDetails = async (req, res, next) => {
+const getUserInfo = async (req, res, next) => {
     try {
         const user = await User.findById(req?.user._id).select('-password -accessToken');
         return res.status(200).json(new ApiResponse('user data fetching successfull', user, 200, true));
@@ -182,4 +182,24 @@ const getUserDetails = async (req, res, next) => {
         return next(new ApiError([], 'error at get user details route'));
     }
 }
-export { registerUser, userLogin, userLogout, userEditPassword, getUserDetails }
+
+const userProfile = async (req, res, next) => {
+    console.log(req.params.id);
+
+    try {
+        const user = await User.findOne({ userId: req.params?.id.trim().toLowerCase() }).select('-password -refreshToken');
+        console.log(user);
+        if (!user) {
+            return next(new ApiError([], 'user not found', 404))
+        }
+        return res.status(200).json(new ApiResponse('user found', user, 200, true))
+    } catch (error) {
+        return next(new ApiError([], 'error at userProfile'))
+    }
+}
+
+
+export { registerUser, userLogin, userLogout, userEditPassword, getUserInfo, userProfile }
+
+
+
