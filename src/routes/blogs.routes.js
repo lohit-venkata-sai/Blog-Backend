@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBlog, getBlogBySlug } from "../controllers/blogs.js";
+import { createBlog, getBlogBySlug, latestBlogs } from "../controllers/blogs.js";
 import { likeAndDislikeBlog, likeAndDislikeComment } from '../controllers/likes.js'
 import { postComment } from "../controllers/comments.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
@@ -8,6 +8,7 @@ import upload from "../middlewares/multer.middleware.js";
 const router = Router();
 
 router.route('/b/:slug').get(getBlogBySlug);
+router.route('/latest-blogs/:slug').get(latestBlogs);
 // router.route('/b/:slug/comment').get(getAllComments);
 
 //secure route 

@@ -5,6 +5,7 @@ import { User } from '../models/user.model.js'
 import { deleteFromCloudinary, uploadToCloudinary } from "../utilities/cloudinary.js";
 import fs from 'fs'
 import { genRefreshAndAccessToken } from "../utilities/jwtTokenGen.js";
+import { Likes } from "../models/likes.model.js";
 
 
 const registerUser = async (req, res, next) => {
@@ -198,8 +199,48 @@ const userProfile = async (req, res, next) => {
     }
 }
 
+const getLikedBlogs = async (req, res, next) => {
+    //get user id 
+    console.log('getLikedBlogs is hitted')
+    const likedBlogs = await Likes.aggregate([
+        {
+            $match: { userId: req.user._id }
+        },
+        {
+            $lookup: {
+                from: "blogs",
+                localField: "likedBlogId",
+                foreignField: "_id",
+                as: "likedBlogs"
+            }
+        },
+        {
+            $unwind: "$likedBlogs"
+        },
+        {
+            $project: {
+                _id: 0,
+                "likedBlogs._id": 1,
+                "likedBlogs.title": 1,
+                "likedBlogs.tags": 1,
+                "likedBlogs.coverImage": 1,
+                "likedBlogs.views": 1,
+                "likedBlogs.slug": 1
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                likedBlogs: { $push: "$likedBlogs" }
+            }
+        },
+        {
+            $project: { _id: 0 }
+        }
+    ]);
 
-export { registerUser, userLogin, userLogout, userEditPassword, getUserInfo, userProfile }
 
+    return res.status(200).json(new ApiResponse('all ok ', likedBlogs, 200, true))
+}
 
-
+export { registerUser, userLogin, userLogout, userEditPassword, getUserInfo, userProfile, getLikedBlogs }
